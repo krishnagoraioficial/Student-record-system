@@ -8,7 +8,7 @@ struct info
     char first_name[20];
     char last_name[20];
     int rollNumber;
-    int Marks;
+    float Marks;
 };
 
 // Defining Functions...
@@ -65,7 +65,7 @@ void print(struct info *printStudent)
     printf("First Name : %s\n", printStudent->first_name);
     printf("Last Name  : %s\n", printStudent->last_name);
     printf("Roll Number: %d\n", printStudent->rollNumber);
-    printf("Marks      : %d\n", printStudent->Marks);
+    printf("Marks      : %.2f\n", printStudent->Marks);
 }
 
 void viewAll()
@@ -115,7 +115,7 @@ void App()
     do
     {
         printf("Enter the Marks (0-100): ");
-        scanf("%d", &student.Marks);
+        scanf("%f", &student.Marks);
         if (student.Marks < 0 || student.Marks > 100)
         {
             printf("Invalid marks! Please enter valid marks...\n");
@@ -137,7 +137,7 @@ void App()
     }
 
     // Writing to file
-    fprintf(fp, "First name: %s\nLast name: %s\nRoll Number: %d\nMarks: %d\n\n",
+    fprintf(fp, "First name: %s\nLast name: %s\nRoll Number: %d\nMarks: %.2f\n\n",
             student.first_name, student.last_name, student.rollNumber, student.Marks);
     fprintf(fp, "------------------------------\n");
 
