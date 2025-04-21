@@ -15,11 +15,18 @@ struct info
 void search();
 void print(struct info *printStudent);
 void viewAll();
+int isRollNumberExists(int roll);
 void App();
 void Exit();
 
 int main()
 {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+
     int input;
     // Heading
     printf("***********************************************\n");
@@ -109,9 +116,16 @@ void App()
     printf("Enter Name of Student Last name: ");
     scanf("%s", student.last_name);
 
-    printf("Enter the roll Number: ");
-    scanf("%d", &student.rollNumber);
-
+    int exists;
+    do {
+        printf("Enter the roll Number: ");
+        scanf("%d", &student.rollNumber);
+        exists = isRollNumberExists(student.rollNumber);
+        if (exists) {
+            printf("Roll Number %d already exists! Please enter a unique one.\n", student.rollNumber);
+        }
+    } while (exists);
+    
     do
     {
         printf("Enter the Marks (0-100): ");
@@ -192,4 +206,30 @@ void search()
     }
 
     fclose(fp);
+}
+
+int isRollNumberExists(int roll)
+{
+    FILE *fp = fopen("record.txt", "r");
+    if (fp == NULL)
+        return 0; // No records yet
+
+    char line[100];
+    int currentRoll;
+
+    while (fgets(line, sizeof(line), fp))
+    {
+        if (strstr(line, "Roll Number:") != NULL)
+        {
+            sscanf(line, "Roll Number: %d", &currentRoll);
+            if (currentRoll == roll)
+            {
+                fclose(fp);
+                return 1; // Found match
+            }
+        }
+    }
+
+    fclose(fp);
+    return 0; // Not found
 }
